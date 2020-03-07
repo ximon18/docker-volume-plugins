@@ -10,7 +10,7 @@ fi
 
 TAG=$1
 build() {
-    docker plugin rm -f ximon18/$1 || true
+    docker plugin rm -f ximoneighteen/$1 || true
     docker rmi -f rootfsimage || true
     docker build -t rootfsimage $1
     id=$(docker create rootfsimage true) # id was cd851ce43a403 when the image was created
@@ -21,10 +21,10 @@ build() {
     cp $1/config.json build
     if [ -z "$TAG" ]
     then
-        docker plugin create ximon18/$1 build
+        docker plugin create ximoneighteen/$1 build
     else
-        docker plugin create ximon18/$1:$TAG build
-        docker plugin push ximon18/$1:$TAG
+        docker plugin create ximoneighteen/$1:$TAG build
+        docker plugin push ximoneighteen/$1:$TAG
     fi
 }
 build glusterfs-volume-plugin
