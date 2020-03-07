@@ -269,17 +269,19 @@ func (p *Driver) Unmount(req *volume.UnmountRequest) error {
 		return getVolErr
 	}
 
-	// mountPoint := path.Join(volume.DefaultDockerRootDirectory, req.ID)
-	// if err := syscall.Unmount(mountPoint, 0); err != nil {
-	// 	errno := err.(syscall.Errno)
-	// 	if errno == syscall.EINVAL {
-	// 		log.Printf("error unmounting invalid mount %s: %s", req.Name, err.Error())
-	// 	} else {
-	// 		return fmt.Errorf("error unmounting %s: %s", req.Name, err.Error())
-	// 	}
-	// }
+	mountPoint := path.Join(volume.DefaultDockerRootDirectory, req.ID)
+	if err := syscall.Unmount(mountPoint, 0); err != nil {
+		errno := err.(syscall.Errno)
+		if errno == syscall.EINVAL {
+			log.Printf("error unmounting invalid mount %s: %s", req.Name, err.Error())
+		} else {
+			return fmt.Errorf("error unmounting %s: %s", req.Name, err.Error())
+		}
+	}
+	log.Printf("waiting for PID %s..", volumeInfo.pid)
 	process, error := os.FindProcess(volumeInfo.pid)
-	process.Kill()
+	process.Wait()
+	volumeInfo.pid = -1
 	volumeInfo.MountPoint = ""
 	volumeInfo.Status["mounted"] = false
 
