@@ -12,4 +12,5 @@ RUN /usr/local/go/bin/go get github.com/ximon18/docker-volume-plugins/glusterfs-
     yum autoremove -q -y && \
     yum clean all && \
     rm -rf /var/cache/yum /var/log/anaconda /var/cache/yum /etc/mtab && \
-    rm /var/log/lastlog /var/log/tallylog
+    rm /var/log/lastlog /var/log/tallylog && \
+    mkdir /var/lib/glusterd

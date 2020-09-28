@@ -76,3 +76,9 @@ This is an example of mounting and testing a store outside the swarm.  It is ass
     docker plugin enable trajano/glusterfs-volume-plugin
     docker volume create -d trajano/glusterfs-volume-plugin --opt servers=store1 trajano
     docker run -it -v trajano:/mnt alpine
+
+## SSL support
+
+Host path `/etc/ssl` is made available to gluster clients so to configure SSL you should follow steps from GlusterFS documentation.
+
+To secure management channel (server to server communication), set `SECURE_MANAGEMENT` to non empty value, eg.: `docker plugin glusterfs set SECURE_MANAGEMENT=yes`.
